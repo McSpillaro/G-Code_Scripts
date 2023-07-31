@@ -3,9 +3,9 @@ if isempty(size) == 1
     size = 2;
 end
 
-num_layers = input('Enter number of layers (Default: 10): ')
-if isempty(num_layers) == 1
-    num_layers = 10;
+layer = input('Enter number of layers (Default: 10): ')
+if isempty(layer) == 1
+    layer = 10;
 end
 
 print_speed = input('Enter print speed [mm/min](Default: 250): ');
