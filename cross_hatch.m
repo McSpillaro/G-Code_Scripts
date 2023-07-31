@@ -59,3 +59,15 @@ for layer=1:n
     fprintf(file, ';; Layer %s\n',num2str(layer));
     fprintf(file, 'M790\n\n'); % Displays new layer on printer 
 
+    z = layer * dz
+
+    % Primes 
+    fprintf(file, ';; Priming;\n');
+    fprintf(file, 'G0 Z%s;\n', num2str(z));
+    fprintf(file, 'G0 X%s Y%s;\n\n',num2str(pos_1(1)),num2str(pos_1(2)-50));
+    
+    
+    fprintf(file, '; Pad 1\n');
+
+
+    
