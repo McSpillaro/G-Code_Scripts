@@ -31,7 +31,7 @@ if isempty(dewll_time)==1
     dewll_time=15;
 end
 
-file = fopen(sprintf('TWO_PAD_%sL_d%s_dz%s_dt%s_F%s.gcode',num2str(n), num2str(l), num2str(dz),num2str(dwell_time),num2str(print_speed)),'wt');
+file = fopen(sprintf('TWO_PAD_%sL_d%s_dz%s_dt%s_F%s.gcode',num2str(n), num2str(l), num2str(dz),num2str(dewll_time),num2str(print_speed)),'wt');
 
 l=l*10; % cm->mm
 % centers=80; % distance between centers of cirlces 
@@ -123,7 +123,7 @@ for layer=1:n
     end
 
     % Dwell time
-    fprintf(file, 'G4 S%s;\n',num2str(dwell_time));
+    fprintf(file, 'G4 S%s;\n',num2str(dewll_time));
 
 end
 
