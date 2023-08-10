@@ -9,14 +9,17 @@ This is taken care of in the code with the "dz" variable.
 # Modules
 import numpy as np
 import pandas as pd
+import string
 
 # GLOBAL VARS
-global_columns = ['G', 'X', 'Y', 'Z', 'E', 'F']
+GLOBAL_COLUMNS = ['G', 'X', 'Y', 'Z', 'E', 'F']
+X_CENTER = 70
+Y_CENTER = 80
 
 # Specifications of the print
 size = input('Enter width of square [cm] (Default: 2): ')
 if size == '':
-    size = 2
+    size = 2 # 1 cm -> 1 axis value (e.g. X60 to X80 = 2 cm)
 
 num_layer = input('Enter number of layers (Default: 10): ')
 if num_layer == '':
@@ -40,13 +43,56 @@ def create_gcode_dataframe(columns, data):
     for i in range(len(df)): # loops through the rows in the df
         row = df.iloc[i] # accesses the info in the current row
         for column in columns:
-            if row.isna(column): # formats empty values
-                continue
+            if row[column] not in string.digits: # formats empty values
+                if column == 'E':
+                    row[column] = 1
+                elif column == 'F':
+                    row[column] = print_speed
             row_values = ' '.join(str(f'{column}{row[column]}') for column in columns) # creates a string of all instructions for file writing
             print(row_values)
     
     return row_values
     
+# Dictionaries containing pattern information
+# X_CENTER = 70 --- Y_CENTER = 80
+def pattern_1():
+    g_list = []
+    x_list = [60]
+    y_list = []
+    z_list = []
+    e_list = []
+    f_list = []
+    
+    count = 0
+    
+    for i in range(size):
+        g_list.append('1')
+    
+    n = 0
+    x_val = (size * 10)
+    while n < range(size*10): # size * 10 converts cm to mm (or each step for printer axis)
+        x_list.append(x_val+=1)
+        if (x_val) not in x_list:
+            count += 1
+        elif (x_val) in x_list and count == 1:
+            count = 2
+            x_list.append(x_val+=1)
+            
+        n+=1
+        
+    n=0
+    y_val = 90 # the end of the print bed size
+    while n < range(size*10):
+        if y_val == 90:
+            y_list.append(y_val)
+        
+    data = {
+        
+    }
+    
+    return data
+
+
 # Creating the .gcode file
 with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
     size *= 10  # cm -> mm
@@ -75,20 +121,13 @@ with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.g
         file.write('M790\n\n')  # Displays new layer on printer
 
         z = (layer + 1) * dz  # Sets the z-pos based on layer number
-        
-        # PRIMING INSTRUCTIONS
-        priming_dictionary = {
-            'G': [1, 2, 3],
-            'X': [1, 2, 3],
-            'Y': [1, 2, 3],
-            'Z': [1, 2, 3]
-        }
-        
-        file.write(create_gcode_dataframe(global_columns, priming_dictionary))
 
-    file.write(';; Priming;\n')
-    file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
-    file.write(f'G0 ')
+        file.write(';; Priming;\n')
+        file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
+        file.write(f'G0 X60 Y20;\n\n')  # Sets needle to default XY location
+        
+        file.write(';; Pattern 1;\n')
+        
 
 '''
 When printing, have the first layer at a flow rate of 2.000 and the succeeding layers be
