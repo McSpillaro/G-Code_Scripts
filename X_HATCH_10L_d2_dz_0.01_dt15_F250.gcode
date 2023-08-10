@@ -13,33 +13,3 @@ T1;
 ;; Layer 0
 M790
 
-G3 X3 Y3 Z3 Enan Fnan;; Layer 1
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 2
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 3
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 4
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 5
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 6
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 7
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 8
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Layer 9
-M790
-
-G3 X3 Y3 Z3 Enan Fnan;; Priming;
-G0 Z0.1;
-G0 

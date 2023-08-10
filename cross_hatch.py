@@ -40,7 +40,7 @@ def create_gcode_dataframe(columns, data):
     for i in range(len(df)): # loops through the rows in the df
         row = df.iloc[i] # accesses the info in the current row
         for column in columns:
-            if row[column] == '': # formats empty values
+            if row.isna(column): # formats empty values
                 continue
             row_values = ' '.join(str(f'{column}{row[column]}') for column in columns) # creates a string of all instructions for file writing
             print(row_values)
