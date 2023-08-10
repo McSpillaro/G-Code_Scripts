@@ -31,18 +31,38 @@ dwell_time = input('Enter time between layers [s] (Default: 15): ')
 if dwell_time == '':
     dwell_time = 15
 
-# Formats the .gcode file from data frame input
-def pd_df_formatter(dataframe):
-    list_data = []
-    df = dataframe.iloc[:, :]
+# Define column labels for dataframe
+columns = ['G', 'X', 'Y', 'Z', 'E', 'F']
 
-    try:
-        for b, a in df:  # loops through each row in the given print pattern dataframe
-            list_data.append(f'{a}')
-        print(list_data)
-    except:
-        print('Could not format dataframe.') 
+# Creates a dataframe based on given column and pattern data
+def create_gcode_dataframe(columns, data):
+    df = pd.DataFrame(data, columns=columns) # Creates the df
+
+    for i in range(len(df)): # loops through the rows in the df
+        row = df.iloc[i] # accesses the info in the current row
+        for column in columns:
+            if row[column] == 'NaN': # formats empty values
+                continue
+            row_values = ' '.join(str(row[column])) # creates a string of all commands
+    
+    return row_values
+        
+def priming_instructions():
+    
     return
+
+def pattern_1(size=size, layer=num_layer, dz=dz, time=dwell_time, speed=print_speed):
+    return
+
+# Create a sample data dictionary
+data = {
+    'g': ['G1', 'G2', 'G3', 'G4', 'G5'],
+    'x': ['X1', 'X2', 'X3', 'X4', 'X5'],
+    'y': ['Y1', 'Y2', 'Y3', 'Y4', 'Y5'],
+    'z': ['Z1', 'Z2', 'Z3', 'Z4', 'Z5'],
+    'e': ['E1', 'E2', 'E3', 'E4', 'E5'],
+    'f': ['F1', 'F2', 'F3', 'F4', 'F5']
+}
 
 # Creating the .gcode file
 with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
@@ -73,46 +93,9 @@ with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.g
 
         z = (layer + 1) * dz  # Sets the z-pos based on layer number
 
-        # Array of commands
-        # Create a pandas dataframe that contains the dictionary of commands and position values
-        # Create a dictionary that contains the cmds and pos values and is loopable from params.
-        priming_df = pd.DataFrame()
-        
-        for i in len()
-        G_dict = {
-            ['G':]
-        }
-        
-        priming_command_list = []
-        for i in range(size):
-            
-        priming_dict = {
-            'G':
-        }
-        
-        priming = pd.DataFrame(
-            data=[[]],
-            columns=['G', 'X', 'Y', 'Z', 'E', 'F']
-        )
-        horizontal_pattern = pd.DataFrame(
-            data=[[]]
-        )
-        LX_patter = pd.DataFrame(
-            data=[[]]
-        )
-        vertical_pattern = pd.DataFrame(
-            data=[[]]
-        )
-        RX_pattern = pd.DataFrame(
-            data=[[]]
-        )
-
-        # Primes the printer
-        file.write(priming)
-        # file.write((pd_df_formatter(priming)))
-        file.write(';; Priming;\n')
-        file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
-        file.write(f'G0 ')
+    file.write(';; Priming;\n')
+    file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
+    file.write(f'G0 ')
 
 '''
 When printing, have the first layer at a flow rate of 2.000 and the succeeding layers be
