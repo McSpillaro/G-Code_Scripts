@@ -10,6 +10,7 @@ This is taken care of in the code with the "dz" variable.
 import numpy as np
 import pandas as pd
 import string
+import math as m
 
 # GLOBAL VARS
 GLOBAL_COLUMNS = ['G', 'X', 'Y', 'Z', 'E', 'F']
@@ -17,25 +18,35 @@ X_CENTER = 70
 Y_CENTER = 80
 
 # Specifications of the print
-size = input('Enter width of square [cm] (Default: 2): ')
-if size == '':
-    size = 2 # 1 cm -> 1 axis value (e.g. X60 to X80 = 2 cm)
+user_input = input('Enter width of square [cm] (Default: 2): ')
+if user_input == '':
+    size = 2 # 1 mm -> 1 axis value (e.g. X60 to X80 = 2 cm)
+else:
+    size = int(user_input)
 
-num_layer = input('Enter number of layers (Default: 10): ')
-if num_layer == '':
+user_input = input('Enter number of layers (Default: 10): ')
+if user_input == '':
     num_layer = 10
+else:
+    num_layer = int(user_input)
 
-print_speed = input('Enter print speed [mm/min] (Default: 250): ')
-if print_speed == '':
+user_input = input('Enter print speed [mm/min] (Default: 250): ')
+if user_input == '':
     print_speed = 250
+else:
+    print_speed = int(user_input)
 
-dz = input('Enter step height [mm] (Default: 0.01): ')
-if dz == '':
+user_input = input('Enter step height [mm] (Default: 0.01): ')
+if user_input == '':
     dz = 0.01
+else:
+    dz = float(user_input)
 
-dwell_time = input('Enter time between layers [s] (Default: 15): ')
-if dwell_time == '':
+user_input = input('Enter time between layers [s] (Default: 15): ')
+if user_input == '':
     dwell_time = 15
+else:
+    dwell_time = int(user_input)
 
 # Creates a dataframe based on given column and pattern data -> column => list; data => dictionary
 def create_gcode_dataframe(columns, data):
@@ -57,7 +68,7 @@ def create_gcode_dataframe(columns, data):
 # X_CENTER = 70 --- Y_CENTER = 80
 def pattern_1():
     g_list = []
-    x_list = [60]
+    x_list = []
     y_list = []
     z_list = []
     e_list = []
@@ -69,14 +80,14 @@ def pattern_1():
         g_list.append('1')
     
     n = 0
-    x_val = (size * 10)
-    while n < range(size*10): # size * 10 converts cm to mm (or each step for printer axis)
-        x_list.append(x_val+=1)
+    x_val = (size * 10)  # size * 10 converts cm to mm (or each step for printer axis)
+    while n < range(x_val):
+        x_list.append(x_val)
         if (x_val) not in x_list:
             count += 1
         elif (x_val) in x_list and count == 1:
             count = 2
-            x_list.append(x_val+=1)
+            x_list.append(x_val)
             
         n+=1
         
@@ -95,9 +106,12 @@ def pattern_1():
 
 # Creating the .gcode file
 with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
-    size *= 10  # cm -> mm
-    center = 80  # distance between centers of circles
+    size *= 10 # cm -> mm
     bands = round(size)  # keeps the number of bands a whole number
+    
+    # Sets XY positions based on size
+    X_POS = X_CENTER - (size / 2)
+    Y_POS = Y_CENTER - (size / 2)
 
     # Sets initial parameters
     file.write('G21          ; Sets units to millimeters\n')
@@ -124,7 +138,7 @@ with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.g
 
         file.write(';; Priming;\n')
         file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
-        file.write(f'G0 X60 Y20;\n\n')  # Sets needle to default XY location
+        file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')  # Sets needle to default XY location
         
         file.write(';; Pattern 1;\n')
         
