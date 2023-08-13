@@ -23,6 +23,7 @@ if user_input == '':
     size = 2 # 1 mm -> 1 axis value (e.g. X60 to X80 = 2 cm)
 else:
     size = int(user_input)
+size *= 10 # cm -> mm
 
 user_input = input('Enter number of layers (Default: 10): ')
 if user_input == '':
@@ -63,6 +64,10 @@ def create_gcode_dataframe(columns, data):
             print(row_values)
     
     return row_values
+
+# Sets default XY positions based on size of print
+X_POS = X_CENTER - (size / 2)
+Y_POS = Y_CENTER - (size / 2)
     
 # Dictionaries containing pattern information
 # X_CENTER = 70 --- Y_CENTER = 80
@@ -79,9 +84,8 @@ def pattern_1():
     for i in range(size):
         g_list.append('1')
     
-    n = 0
-    x_val = (size * 10)  # size * 10 converts cm to mm (or each step for printer axis)
-    while n < range(x_val):
+    x_val = X_POS
+    while x_val < (X_POS+size-1):
         x_list.append(x_val)
         if (x_val) not in x_list:
             count += 1
@@ -105,13 +109,8 @@ def pattern_1():
 
 
 # Creating the .gcode file
-with open(f'X_HATCH_{num_layer}L_d{size}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
-    size *= 10 # cm -> mm
+with open(f'X_HATCH_{num_layer}L_d{size/10}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
     bands = round(size)  # keeps the number of bands a whole number
-    
-    # Sets XY positions based on size
-    X_POS = X_CENTER - (size / 2)
-    Y_POS = Y_CENTER - (size / 2)
 
     # Sets initial parameters
     file.write('G21          ; Sets units to millimeters\n')
