@@ -20,10 +20,10 @@ Y_CENTER = 80
 # Specifications of the print
 user_input = input('Enter width of square [cm] (Default: 2): ')
 if user_input == '':
-    size = 2 # 1 mm -> 1 axis value (e.g. X60 to X80 = 2 cm)
+    size = 2  # 1 mm -> 1 axis value (e.g. X60 to X80 = 2 cm)
 else:
     size = int(user_input)
-size *= 10 # cm -> mm
+size *= 10  # cm -> mm
 
 user_input = input('Enter number of layers (Default: 10): ')
 if user_input == '':
@@ -50,66 +50,77 @@ else:
     dwell_time = int(user_input)
 
 # Creates a dataframe based on given column and pattern data -> column => list; data => dictionary
+
+
 def create_gcode_dataframe(columns, data):
-    df = pd.DataFrame(data, columns=columns) 
-    for i in range(len(df)): # loops through the rows in the df
-        row = df.iloc[i] # accesses the info in the current row
-        for column in columns:
-            if row[column] not in string.digits: # formats empty values
-                if column == 'E':
-                    row[column] = 1
-                elif column == 'F':
-                    row[column] = print_speed
-            row_values = ' '.join(str(f'{column}{row[column]}') for column in columns) # creates a string of all instructions for file writing
-            print(row_values)
-    
-    return row_values
+    df = pd.DataFrame(data, columns=columns)
+    list_elems = []
+    for i in range(len(df)):  # loops through the rows in the df
+        row = df.iloc[i]  # accesses the info in the current row
+
+        # creates a string of all instructions for file writing
+        row_values = ' '.join(
+            str(f'{column}{row[column]}') for column in columns)
+        list_elems.append(row_values)
+
+    return list_elems
+
 
 # Sets default XY positions based on size of print
 X_POS = X_CENTER - (size / 2)
 Y_POS = Y_CENTER - (size / 2)
-    
+
 # Dictionaries containing pattern information
 # X_CENTER = 70 --- Y_CENTER = 80
-def pattern_1():
+
+
+def pattern_1(z):
     g_list = []
     x_list = []
     y_list = []
     z_list = []
     e_list = []
     f_list = []
-    
-    count = 0
-    
-    for i in range(size):
+
+    x_val = X_POS  # border of print in X
+    y_val_min = Y_POS  # border of print in Y (min)
+    y_val_max = Y_POS + size  # border of print in Y (max)
+
+    x_list.append(m.floor(x_val))
+    x_val += 1
+
+    while x_val < (X_POS+size):
+        for i in range(2):
+            x_list.append(m.floor(x_val))
+        x_val += 1
+
+    for i in range(len(x_list)):
         g_list.append('1')
-    
-    x_val = X_POS
-    while x_val < (X_POS+size-1):
-        x_list.append(x_val)
-        if (x_val) not in x_list:
-            count += 1
-        elif (x_val) in x_list and count == 1:
-            count = 2
-            x_list.append(x_val)
-            
-        n+=1
-        
-    n=0
-    y_val = 90 # the end of the print bed size
-    while n < range(size*10):
-        if y_val == 90:
-            y_list.append(y_val)
-        
+        z_list.append(z)
+        e_list.append('1')
+        f_list.append(str(print_speed))
+
+    for i in range(m.floor((len(x_list)+1) / 4)):
+        for j in range(2):
+            y_list.append(m.floor(y_val_max))
+        for k in range(2):
+            y_list.append(m.floor(y_val_min))
+    y_list.pop(len(y_list)-1)
+
     data = {
-        
+        'G': g_list,
+        'X': x_list,
+        'Y': y_list,
+        'Z': z_list,
+        'E': e_list,
+        'F': f_list
     }
-    
+
     return data
 
 
 # Creating the .gcode file
-with open(f'X_HATCH_{num_layer}L_d{size/10}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
+with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
     bands = round(size)  # keeps the number of bands a whole number
 
     # Sets initial parameters
@@ -137,10 +148,15 @@ with open(f'X_HATCH_{num_layer}L_d{size/10}_dz_{dz}_dt{dwell_time}_F{print_speed
 
         file.write(';; Priming;\n')
         file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
-        file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')  # Sets needle to default XY location
-        
+        # Sets needle to default XY location
+        file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')
+
         file.write(';; Pattern 1;\n')
-        
+        p1 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_1(z))
+        for i in p1:
+            file.write(f'{i}\n')
+        file.write('\n')
+
 
 '''
 When printing, have the first layer at a flow rate of 2.000 and the succeeding layers be
