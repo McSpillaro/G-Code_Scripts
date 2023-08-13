@@ -7,7 +7,6 @@ This is taken care of in the code with the "dz" variable.
 '''
 
 # Modules
-import numpy as np
 import pandas as pd
 import string
 import math as m
@@ -51,7 +50,6 @@ else:
 
 # Creates a dataframe based on given column and pattern data -> column => list; data => dictionary
 
-
 def create_gcode_dataframe(columns, data):
     df = pd.DataFrame(data, columns=columns)
     list_elems = []
@@ -65,15 +63,12 @@ def create_gcode_dataframe(columns, data):
 
     return list_elems
 
-
 # Sets default XY positions based on size of print
 X_POS = X_CENTER - (size / 2)
 Y_POS = Y_CENTER - (size / 2)
 
 # Dictionaries containing pattern information
 # X_CENTER = 70 --- Y_CENTER = 80
-
-
 def pattern_1(z):
     g_list = []
     x_list = []
@@ -118,6 +113,78 @@ def pattern_1(z):
 
     return data
 
+def pattern_2(z):
+    g_list = []
+    x_list = []
+    y_list = []
+    z_list = []
+    e_list = []
+    f_list = []
+    
+    x_val_right = X_POS
+    x_val_left = X_POS + size
+    y_val_up = Y_POS
+    y_val_down = Y_POS + size
+    
+    
+    
+    return data
+
+def pattern_3(z):
+    g_list = []
+    x_list = []
+    y_list = []
+    z_list = []
+    e_list = []
+    f_list = []
+
+    y_val = Y_POS  # border of print in Y
+    x_val_min = X_POS  # border of print in X (min)
+    x_val_max = X_POS + size  # border of print in X (max)
+
+    y_list.append(m.floor(y_val))
+    y_val += 1
+
+    while y_val < (Y_POS+size):
+        for i in range(2):
+            y_list.append(m.floor(y_val))
+        y_val += 1
+
+    for i in range(len(y_list)):
+        g_list.append('1')
+        z_list.append(z)
+        e_list.append('1')
+        f_list.append(str(print_speed))
+
+    for i in range(m.floor((len(y_list)+1) / 4)):
+        for j in range(2):
+            x_list.append(m.floor(x_val_max))
+        for k in range(2):
+            x_list.append(m.floor(x_val_min))
+    x_list.pop(len(x_list)-1)
+
+    data = {
+        'G': g_list,
+        'X': x_list,
+        'Y': y_list,
+        'Z': z_list,
+        'E': e_list,
+        'F': f_list
+    }
+
+    return data
+
+def pattern_4(z):
+    g_list = []
+    x_list = []
+    y_list = []
+    z_list = []
+    e_list = []
+    f_list = []
+    
+    
+    
+    return data
 
 # Creating the .gcode file
 with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
@@ -157,6 +224,23 @@ with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{pr
             file.write(f'{i}\n')
         file.write('\n')
 
+        # file.write(';; Pattern 2;\n')
+        # p2 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_2(z))
+        # for i in p2:
+        #     file.write(f'{i}\n')
+        # file.write('\n')
+
+        file.write(';; Pattern 3;\n')
+        p3 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_3(z))
+        for i in p3:
+            file.write(f'{i}\n')
+        file.write('\n')
+
+        # file.write(';; Pattern 4;\n')
+        # p4 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_4(z))
+        # for i in p4:
+        #     file.write(f'{i}\n')
+        # file.write('\n')
 
 '''
 When printing, have the first layer at a flow rate of 2.000 and the succeeding layers be
