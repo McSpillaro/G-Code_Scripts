@@ -1,12 +1,15 @@
 import pandas as pd
 
-def create_and_print_dataframe(columns, data):
+def create_dataframe(columns, data):
     df = pd.DataFrame(data, columns=columns)
+    list_elems = []
 
     for i in range(len(df)):
         row = df.iloc[i]
         row_values = ' '.join(f"{column}{row[column]}" for column in columns)
-        print(row_values)
+        list_elems.append(row_values)
+    
+    return list_elems
 
 # Define column labels
 columns = ['g', 'x', 'y', 'z', 'e', 'f']
@@ -22,4 +25,4 @@ data = {
 }
 
 # Call the function to create and print the DataFrame
-create_and_print_dataframe(columns, data)
+print(create_dataframe(columns, data))
