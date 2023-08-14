@@ -50,6 +50,7 @@ else:
 
 # Creates a dataframe based on given column and pattern data -> column => list; data => dictionary
 
+
 def create_gcode_dataframe(columns, data):
     df = pd.DataFrame(data, columns=columns)
     list_elems = []
@@ -120,14 +121,54 @@ def pattern_2(z):
     z_list = []
     e_list = []
     f_list = []
-    
-    x_val_right = X_POS
+
+    x_val_right = X_POS - 1
     x_val_left = X_POS + size
-    y_val_up = Y_POS
+    y_val_up = Y_POS - 1
     y_val_down = Y_POS + size
-    
-    
-    
+
+    # For X-Axis values
+    while (x_val_right < x_val_left) and (x_val_right != x_val_left - 1):
+        x_val_right += 1
+        x_list.append(m.floor(x_val_right))
+        x_list.append(m.floor(x_val_left))
+    x_val_right = X_POS
+    x_val_left = X_POS + size + 1
+
+    while (x_val_left > x_val_right) and (x_val_left != x_val_right + 1):
+        x_val_left -= 1
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(x_val_right))
+        
+    # For Y-Axis values
+    while (y_val_up < y_val_down) and (y_val_up != y_val_down - 1):
+        y_val_up += 1
+        y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(y_val_down))
+    y_val_up = Y_POS
+    y_val_down = Y_POS + size + 1
+
+    while (y_val_down > y_val_up) and (y_val_down != y_val_up + 1):
+        y_val_down -= 1
+        y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(y_val_down))
+
+    # For non XY values
+    for i in range(len(x_list)):
+        g_list.append('1')
+        z_list.append(z)
+        e_list.append('1')
+        f_list.append(str(print_speed))
+
+    data = {
+        'G': g_list,
+        'X': x_list,
+        'Y': y_list,
+        'Z': z_list,
+        'E': e_list,
+        'F': f_list
+    }
+
     return data
 
 def pattern_3(z):
@@ -174,6 +215,7 @@ def pattern_3(z):
 
     return data
 
+
 def pattern_4(z):
     g_list = []
     x_list = []
@@ -181,10 +223,13 @@ def pattern_4(z):
     z_list = []
     e_list = []
     f_list = []
-    
-    
-    
+
+    data = {
+        
+    }
+
     return data
+
 
 # Creating the .gcode file
 with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
@@ -213,23 +258,27 @@ with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{pr
 
         z = (layer + 1) * dz  # Sets the z-pos based on layer number
 
+        # Priming
         file.write(';; Priming;\n')
         file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
         # Sets needle to default XY location
         file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')
 
+        # Pattern 1
         file.write(';; Pattern 1;\n')
         p1 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_1(z))
         for i in p1:
             file.write(f'{i}\n')
         file.write('\n')
 
-        # file.write(';; Pattern 2;\n')
-        # p2 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_2(z))
-        # for i in p2:
-        #     file.write(f'{i}\n')
-        # file.write('\n')
+        # Pattern 2
+        file.write(';; Pattern 2;\n')
+        p2 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_2(z))
+        for i in p2:
+            file.write(f'{i}\n')
+        file.write('\n')
 
+        # Pattern 3
         file.write(';; Pattern 3;\n')
         p3 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_3(z))
         for i in p3:
