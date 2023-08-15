@@ -49,8 +49,6 @@ else:
     dwell_time = int(user_input)
 
 # Creates a dataframe based on given column and pattern data -> column => list; data => dictionary
-
-
 def create_gcode_dataframe(columns, data):
     df = pd.DataFrame(data, columns=columns)
     list_elems = []
@@ -215,7 +213,6 @@ def pattern_3(z):
 
     return data
 
-
 def pattern_4(z):
     g_list = []
     x_list = []
@@ -231,27 +228,26 @@ def pattern_4(z):
 
     # For X-Axis values
     while (x_val_right < x_val_left) and (x_val_right != x_val_left - 1):
-        x_val_right += 1
+        x_val_left -= 1
         x_list.append(m.floor(x_val_right))
         x_list.append(m.floor(x_val_left))
-    x_val_right = X_POS
-    x_val_left = X_POS + size + 1
+    x_val_left = X_POS + size
 
     while (x_val_left > x_val_right) and (x_val_left != x_val_right + 1):
-        x_val_left -= 1
+        x_val_right += 1
         x_list.append(m.floor(x_val_left))
         x_list.append(m.floor(x_val_right))
         
     # For Y-Axis values
     while (y_val_up < y_val_down) and (y_val_up != y_val_down - 1):
-        y_val_up += 1
+        y_val_down -= 1
         y_list.append(m.floor(y_val_up))
         y_list.append(m.floor(y_val_down))
     y_val_up = Y_POS
     y_val_down = Y_POS + size + 1
 
     while (y_val_down > y_val_up) and (y_val_down != y_val_up + 1):
-        y_val_down -= 1
+        y_val_up += 1
         y_list.append(m.floor(y_val_up))
         y_list.append(m.floor(y_val_down))
 
@@ -328,11 +324,12 @@ with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{pr
             file.write(f'{i}\n')
         file.write('\n')
 
-        # file.write(';; Pattern 4;\n')
-        # p4 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_4(z))
-        # for i in p4:
-        #     file.write(f'{i}\n')
-        # file.write('\n')
+        # Pattern 4
+        file.write(';; Pattern 4;\n')
+        p4 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_4(z))
+        for i in p4:
+            file.write(f'{i}\n')
+        file.write('\n')
 
 '''
 When printing, have the first layer at a flow rate of 2.000 and the succeeding layers be
