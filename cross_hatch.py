@@ -224,8 +224,51 @@ def pattern_4(z):
     e_list = []
     f_list = []
 
-    data = {
+    x_val_right = X_POS - 1
+    x_val_left = X_POS + size
+    y_val_up = Y_POS - 1
+    y_val_down = Y_POS + size
+
+    # For X-Axis values
+    while (x_val_right < x_val_left) and (x_val_right != x_val_left - 1):
+        x_val_right += 1
+        x_list.append(m.floor(x_val_right))
+        x_list.append(m.floor(x_val_left))
+    x_val_right = X_POS
+    x_val_left = X_POS + size + 1
+
+    while (x_val_left > x_val_right) and (x_val_left != x_val_right + 1):
+        x_val_left -= 1
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(x_val_right))
         
+    # For Y-Axis values
+    while (y_val_up < y_val_down) and (y_val_up != y_val_down - 1):
+        y_val_up += 1
+        y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(y_val_down))
+    y_val_up = Y_POS
+    y_val_down = Y_POS + size + 1
+
+    while (y_val_down > y_val_up) and (y_val_down != y_val_up + 1):
+        y_val_down -= 1
+        y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(y_val_down))
+
+    # For non XY values
+    for i in range(len(x_list)):
+        g_list.append('1')
+        z_list.append(z)
+        e_list.append('1')
+        f_list.append(str(print_speed))
+
+    data = {
+        'G': g_list,
+        'X': x_list,
+        'Y': y_list,
+        'Z': z_list,
+        'E': e_list,
+        'F': f_list
     }
 
     return data
