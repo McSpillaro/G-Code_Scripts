@@ -141,15 +141,15 @@ def pattern_2(z):
     # For Y-Axis values
     while (y_val_up < y_val_down) and (y_val_up != y_val_down - 1):
         y_val_up += 1
-        y_list.append(m.floor(y_val_up))
         y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(y_val_up))
     y_val_up = Y_POS
     y_val_down = Y_POS + size + 1
 
     while (y_val_down > y_val_up) and (y_val_down != y_val_up + 1):
         y_val_down -= 1
-        y_list.append(m.floor(y_val_up))
         y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(y_val_up))
 
     # For non XY values
     for i in range(len(x_list)):
