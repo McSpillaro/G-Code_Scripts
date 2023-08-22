@@ -8,7 +8,6 @@ This is taken care of in the code with the "dz" variable.
 
 # Modules
 import pandas as pd
-import string
 import math as m
 
 # GLOBAL VARS
