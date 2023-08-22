@@ -309,6 +309,12 @@ with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{pr
         for i in p1:
             file.write(f'{i}\n')
         file.write('\n')
+        
+        # Priming
+        file.write(';; Priming;\n')
+        file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
+        # Sets needle to default XY location
+        file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')
 
         # Pattern 2
         file.write(';; Pattern 2;\n')
@@ -317,6 +323,12 @@ with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{pr
             file.write(f'{i}\n')
         file.write('\n')
 
+        # Priming
+        file.write(';; Priming;\n')
+        file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
+        # Sets needle to default XY location
+        file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')
+
         # Pattern 3
         file.write(';; Pattern 3;\n')
         p3 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_3(z))
@@ -324,12 +336,27 @@ with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{pr
             file.write(f'{i}\n')
         file.write('\n')
 
+        # Priming
+        file.write(';; Priming;\n')
+        file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
+        # Sets needle to default XY location
+        file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')
+
         # Pattern 4
         file.write(';; Pattern 4;\n')
         p4 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_4(z))
         for i in p4:
             file.write(f'{i}\n')
         file.write('\n')
+        
+        # Dwell time
+        file.write(f'G4 S{dwell_time};\n')
+        
+    file.write('\n')
+    file.write(';; Rehome and wait\n')
+    file.write('G0 Z3;\n')
+    file.write('G0 X0 Y0;\n')
+    file.write('G0 Z0;\n\n')
 
 '''
 When printing, have the first layer at a flow rate of 2.000 and the succeeding layers be
