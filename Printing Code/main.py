@@ -10,6 +10,9 @@ This is taken care of in the code with the "dz" variable.
 import pandas as pd
 import math as m
 
+# Python files (required for code to work)
+import patterns as ptrn
+
 # GLOBAL VARS
 GLOBAL_COLUMNS = ['G', 'X', 'Y', 'Z', 'E', 'F']
 X_CENTER = 70
@@ -67,7 +70,7 @@ Y_POS = Y_CENTER - (size / 2)
 
 # Dictionaries containing pattern information
 # X_CENTER = 70 --- Y_CENTER = 80
-def pattern_1(z):
+def pattern_1(x, y, z, size, speed):
     g_list = []
     x_list = []
     y_list = []
@@ -75,14 +78,14 @@ def pattern_1(z):
     e_list = []
     f_list = []
 
-    x_val = X_POS  # border of print in X
-    y_val_min = Y_POS  # border of print in Y (min)
-    y_val_max = Y_POS + size  # border of print in Y (max)
+    x_val = x  # border of print in X
+    y_val_min = y  # border of print in Y (min)
+    y_val_max = y + size  # border of print in Y (max)
 
     x_list.append(m.floor(x_val))
     x_val += 1
 
-    while x_val < (X_POS+size):
+    while x_val < (x+size):
         for i in range(2):
             x_list.append(m.floor(x_val))
         x_val += 1
@@ -91,7 +94,7 @@ def pattern_1(z):
         g_list.append('1')
         z_list.append(z)
         e_list.append('1')
-        f_list.append(str(print_speed))
+        f_list.append(str(speed))
 
     for i in range(m.floor((len(x_list)+1) / 4)):
         for j in range(2):
@@ -270,7 +273,7 @@ def pattern_4(z):
 
 
 # Creating the .gcode file
-with open(f'X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
+with open(f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
     bands = round(size)  # keeps the number of bands a whole number
 
     # Sets initial parameters
