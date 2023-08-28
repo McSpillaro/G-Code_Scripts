@@ -48,6 +48,8 @@ else:
     dwell_time = int(user_input)
 
 # Creates a dataframe based on given column and pattern data -> column => list; data => dictionary
+
+
 def create_gcode_dataframe(columns, data):
     df = pd.DataFrame(data, columns=columns)
     list_elems = []
@@ -61,12 +63,15 @@ def create_gcode_dataframe(columns, data):
 
     return list_elems
 
+
 # Sets default XY positions based on size of print
 X_POS = X_CENTER - (size / 2)
 Y_POS = Y_CENTER - (size / 2)
 
 # Dictionaries containing pattern information
 # X_CENTER = 70 --- Y_CENTER = 80
+
+
 def pattern_1(z):
     g_list = []
     x_list = []
@@ -111,6 +116,7 @@ def pattern_1(z):
 
     return data
 
+
 def pattern_2(z):
     g_list = []
     x_list = []
@@ -119,36 +125,46 @@ def pattern_2(z):
     e_list = []
     f_list = []
 
-    x_val_right = X_POS - 1
-    x_val_left = X_POS + size
-    y_val_up = Y_POS - 1
-    y_val_down = Y_POS + size
+    x_val_right = X_POS  # right edge
+    x_val_left = X_POS + size  # left edge
+    y_val_up = Y_POS  # top edge
+    y_val_down = Y_POS + size  # bottom edge
+
+    step = 0
 
     # For X-Axis values
-    while (x_val_right < x_val_left) and (x_val_right != x_val_left - 1):
-        x_val_right += 1
+    step = x_val_right
+    while (step < x_val_left) and (step != x_val_left - 1):
+        step += 1
+        x_list.append(m.floor(step+1))
         x_list.append(m.floor(x_val_right))
-        x_list.append(m.floor(x_val_left))
-    x_val_right = X_POS
-    x_val_left = X_POS + size + 1
+        x_list.append(m.floor(x_val_right))
+        x_list.append(m.floor(step+1))
 
-    while (x_val_left > x_val_right) and (x_val_left != x_val_right + 1):
-        x_val_left -= 1
+    step = x_val_right
+    while (step < x_val_left) and (step != x_val_left - 1):
+        step += 1
         x_list.append(m.floor(x_val_left))
-        x_list.append(m.floor(x_val_right))
-        
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(step))
+        x_list.append(m.floor(step+1))
+
     # For Y-Axis values
-    while (y_val_up < y_val_down) and (y_val_up != y_val_down - 1):
-        y_val_up += 1
-        y_list.append(m.floor(y_val_down))
+    step = y_val_up
+    while (step < y_val_down) and (step != y_val_down - 1):
+        step += 1
         y_list.append(m.floor(y_val_up))
-    y_val_up = Y_POS
-    y_val_down = Y_POS + size + 1
+        y_list.append(m.floor(step))
+        y_list.append(m.floor(step+1))
+        y_list.append(m.floor(y_val_up))
 
-    while (y_val_down > y_val_up) and (y_val_down != y_val_up + 1):
-        y_val_down -= 1
+    step = y_val_up
+    while (step < y_val_down) and (step != y_val_down - 1):
+        step += 1
+        y_list.append(m.floor(step))
+        y_list.append(m.floor(step+1))
         y_list.append(m.floor(y_val_down))
-        y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(y_val_down))
 
     # For non XY values
     for i in range(len(x_list)):
@@ -167,6 +183,7 @@ def pattern_2(z):
     }
 
     return data
+
 
 def pattern_3(z):
     g_list = []
@@ -212,6 +229,7 @@ def pattern_3(z):
 
     return data
 
+
 def pattern_4(z):
     g_list = []
     x_list = []
@@ -220,34 +238,45 @@ def pattern_4(z):
     e_list = []
     f_list = []
 
-    x_val_right = X_POS - 1
-    x_val_left = X_POS + size
-    y_val_up = Y_POS - 1
-    y_val_down = Y_POS + size
+    x_val_right = X_POS  # right edge
+    x_val_left = X_POS + size  # left edge
+    y_val_up = Y_POS  # top edge
+    y_val_down = Y_POS + size  # bottom edge
+
+    step = 0
 
     # For X-Axis values
-    while (x_val_right < x_val_left) and (x_val_right != x_val_left - 1):
-        x_val_left -= 1
+    step = x_val_right
+    while (step < x_val_left) and (step != x_val_left - 1):
+        step += 1
+        x_list.append(m.floor(step+1))
         x_list.append(m.floor(x_val_right))
-        x_list.append(m.floor(x_val_left))
-    x_val_left = X_POS + size
+        x_list.append(m.floor(x_val_right))
+        x_list.append(m.floor(step+1))
 
-    while (x_val_left > x_val_right) and (x_val_left != x_val_right + 1):
-        x_val_right += 1
+    step = x_val_right
+    while (step < x_val_left) and (step != x_val_left - 1):
+        step += 1
         x_list.append(m.floor(x_val_left))
-        x_list.append(m.floor(x_val_right))
-        
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(step))
+        x_list.append(m.floor(step+1))
+
     # For Y-Axis values
-    while (y_val_up < y_val_down) and (y_val_up != y_val_down - 1):
-        y_val_down -= 1
+    step = y_val_up
+    while (step < y_val_down) and (step != y_val_down - 1):
+        step += 1
         y_list.append(m.floor(y_val_up))
-        y_list.append(m.floor(y_val_down))
-    y_val_up = Y_POS
-    y_val_down = Y_POS + size + 1
+        y_list.append(m.floor(step))
+        y_list.append(m.floor(step+1))
+        y_list.append(m.floor(y_val_up))
 
-    while (y_val_down > y_val_up) and (y_val_down != y_val_up + 1):
-        y_val_up += 1
-        y_list.append(m.floor(y_val_up))
+    step = y_val_up
+    while (step < y_val_down) and (step != y_val_down - 1):
+        step += 1
+        y_list.append(m.floor(step))
+        y_list.append(m.floor(step+1))
+        y_list.append(m.floor(y_val_down))
         y_list.append(m.floor(y_val_down))
 
     # For non XY values
@@ -270,7 +299,13 @@ def pattern_4(z):
 
 
 # Creating the .gcode file
-with open(f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w') as file:
+with open(
+    # windows
+    f'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    # mac
+    # f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+) as file:
+
     bands = round(size)  # keeps the number of bands a whole number
 
     # Sets initial parameters
@@ -308,7 +343,7 @@ with open(f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files
         for i in p1:
             file.write(f'{i}\n')
         file.write('\n')
-        
+
         # Priming
         file.write(';; Priming;\n')
         file.write(f'G0 Z{z};\n')  # Sets needle to the desired print height
@@ -347,10 +382,10 @@ with open(f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files
         for i in p4:
             file.write(f'{i}\n')
         file.write('\n')
-        
+
         # Dwell time
         file.write(f'G4 S{dwell_time};\n')
-        
+
     file.write('\n')
     file.write(';; Rehome and wait\n')
     file.write('G0 Z3;\n')
