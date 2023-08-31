@@ -465,9 +465,9 @@ def pattern_3(z):
 # Creating the .gcode file
 with open(
     # windows
-    # 'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    f'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
     # mac
-    f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    # f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
 ) as file:
 
     bands = round(size)  # keeps the number of bands a whole number
