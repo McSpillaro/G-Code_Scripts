@@ -159,6 +159,20 @@ with open(
             file.write('\n')
             
             continue
+        
+        elif Z_COUNT == 4:
+            # Pattern 3
+            file.write(';; Pattern 3;\n')
+            p4 = create_gcode_dataframe(GLOBAL_COLUMNS,
+                                        ptrn.pattern_4(X_POS, Y_POS, z, size, print_speed))
+            for i in p4:
+                file.write(f'{i}\n')
+            
+            # Dwell time
+            file.write(f'G4 S{dwell_time};\n')
+            file.write('\n')
+            
+            continue
 
     file.write('\n')
     file.write(';; Rehome and wait\n')
