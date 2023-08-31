@@ -117,7 +117,7 @@ def pattern_1(z):
     return data
 
 
-def pattern_2(z):
+def pattern_22(z):
     g_list = []
     x_list = []
     y_list = []
@@ -130,7 +130,159 @@ def pattern_2(z):
     y_val_up = Y_POS  # top edge
     y_val_down = Y_POS + size  # bottom edge
 
-    step = 0
+    # For X-axis
+    step_1 = x_val_right + 1
+    step_2 = x_val_right + 2
+
+    while (step_2 < x_val_left) and (step_2 != x_val_left):
+        step_1 += 2
+        step_2 += 2
+        x_list.append(m.floor(x_val_right))
+        x_list.append(m.floor(x_val_right))
+        x_list.append(m.floor(step_1))
+        x_list.append(m.floor(step_2))
+    
+    step_1 = x_val_right
+    step_2 = x_val_right + 1 
+        
+    while (step_2 < x_val_left) and (step_2 != x_val_left - 1):
+        step_1 += 2
+        step_2 += 2
+        x_list.append(m.floor(step_1))
+        x_list.append(m.floor(step_2))
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(x_val_left))
+
+    # For Y-axis
+    step_1 = y_val_up + 1
+    step_2 = y_val_up + 2
+
+    while (step_2 < y_val_down) and (step_2 != y_val_down):
+        step_1 += 2
+        step_2 += 2
+        y_list.append(m.floor(step_1))
+        y_list.append(m.floor(step_2))
+        y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(y_val_up))
+
+    step_1 = y_val_up + 1
+    step_2 = y_val_up + 2
+
+    while (step_2 < y_val_down) and (step_2 != y_val_down):
+        step_1 += 2
+        step_2 += 2
+        y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(step_1))
+        y_list.append(m.floor(step_2))
+
+    # For non XY values
+    for i in range(len(x_list)):
+        g_list.append('1')
+        z_list.append(z)
+        e_list.append('1')
+        f_list.append(str(print_speed))
+
+    data = {
+        'G': g_list,
+        'X': x_list,
+        'Y': y_list,
+        'Z': z_list,
+        'E': e_list,
+        'F': f_list
+    }
+
+    return data
+
+#def pattern_44(z):
+    g_list = []
+    x_list = []
+    y_list = []
+    z_list = []
+    e_list = []
+    f_list = []
+
+    x_val_right = X_POS  # right edge
+    x_val_left = X_POS + size  # left edge
+    y_val_up = Y_POS  # top edge
+    y_val_down = Y_POS + size  # bottom edge
+
+    # For X-axis
+    step_1 = x_val_left - 1
+    step_2 = x_val_left - 2
+
+    while (step_2 > x_val_right) and (step_2 != x_val_right):
+        step_1 -= 2
+        step_2 -= 2
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(step_1))
+        x_list.append(m.floor(step_2))
+    
+    step_1 = x_val_left
+    step_2 = x_val_left - 1
+        
+    while (step_2 > x_val_right) and (step_2 != x_val_right):
+        step_1 -= 2
+        step_2 -= 2
+        x_list.append(m.floor(step_1))
+        x_list.append(m.floor(step_2))
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(x_val_left))
+
+    # For Y-axis
+    step_1 = y_val_down - 1
+    step_2 = y_val_down - 2
+
+    while (step_2 > y_val_up) and (step_2 != y_val_up):
+        step_1 -= 2
+        step_2 -= 2
+        y_list.append(m.floor(step_1))
+        y_list.append(m.floor(step_2))
+        y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(y_val_down))
+
+    step_1 = y_val_down - 1
+    step_2 = y_val_down - 2
+
+    while (step_2 > y_val_up) and (step_2 != y_val_up):
+        step_1 -= 2
+        step_2 -= 2
+        y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(y_val_down))
+        y_list.append(m.floor(step_1))
+        y_list.append(m.floor(step_2))
+
+    # For non XY values
+    for i in range(len(x_list)):
+        g_list.append('1')
+        z_list.append(z)
+        e_list.append('1')
+        f_list.append(str(print_speed))
+    
+    data = {
+        'G': g_list,
+        'X': x_list,
+        'Y': y_list,
+        'Z': z_list,
+        'E': e_list,
+        'F': f_list
+    }
+
+    return data
+
+#def pattern_2(z):
+    g_list = []
+    x_list = []
+    y_list = []
+    z_list = []
+    e_list = []
+    f_list = []
+
+    x_val_right = X_POS  # right edge
+    x_val_left = X_POS + size  # left edge
+    y_val_up = Y_POS  # top edge
+    y_val_down = Y_POS + size  # bottom edge
 
     # For X-Axis values
     step = x_val_right
@@ -230,7 +382,7 @@ def pattern_3(z):
     return data
 
 
-def pattern_4(z):
+# def pattern_4(z):
     g_list = []
     x_list = []
     y_list = []
@@ -246,30 +398,42 @@ def pattern_4(z):
     step = 0
 
     # For X-Axis values
-    step = x_val_right
-    while (step < x_val_left) and (step != x_val_left - 1):
-        step += 1
-        x_list.append(m.floor(step+1))
-        x_list.append(m.floor(x_val_right))
-        x_list.append(m.floor(x_val_right))
-        x_list.append(m.floor(step+1))
+    step1 = x_val_left - 2
+    step2 = step1 - 1
+
+    # initial (before pattern officially starts)
+    x_list.append(m.floor(x_val_left))
+    x_list.append(m.floor(x_val_left-1))
+    x_list.append(m.floor(x_val_left))
+    x_list.append(m.floor(x_val_left))
+
+    while (step2 > x_val_right) and (step != x_val_right + 3):
+        step1 -= 1
+        step2 -= 1
+        x_list.append(m.floor(step1))
+        x_list.append(m.floor(step2))
+        x_list.append(m.floor(x_val_left))
+        x_list.append(m.floor(x_val_left))
 
     step = x_val_right
-    while (step < x_val_left) and (step != x_val_left - 1):
-        step += 1
+    while (step > x_val_right) and (step != x_val_right + 1):
+        step -= 1
         x_list.append(m.floor(x_val_left))
         x_list.append(m.floor(x_val_left))
         x_list.append(m.floor(step))
         x_list.append(m.floor(step+1))
 
     # For Y-Axis values
-    step = y_val_up
-    while (step < y_val_down) and (step != y_val_down - 1):
-        step += 1
+    step1 = y_val_up + 2
+    step2 = step1 + 1
+
+    while (step2 < y_val_down) and (step2 != y_val_down - 3):
+        step1 += 1
+        step2 += 1
         y_list.append(m.floor(y_val_up))
-        y_list.append(m.floor(step))
-        y_list.append(m.floor(step+1))
         y_list.append(m.floor(y_val_up))
+        y_list.append(m.floor(step1))
+        y_list.append(m.floor(step2))
 
     step = y_val_up
     while (step < y_val_down) and (step != y_val_down - 1):
@@ -301,9 +465,9 @@ def pattern_4(z):
 # Creating the .gcode file
 with open(
     # windows
-    f'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    # 'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
     # mac
-    # f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
 ) as file:
 
     bands = round(size)  # keeps the number of bands a whole number
@@ -352,7 +516,7 @@ with open(
 
         # Pattern 2
         file.write(';; Pattern 2;\n')
-        p2 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_2(z))
+        p2 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_22(z))
         for i in p2:
             file.write(f'{i}\n')
         file.write('\n')
@@ -377,11 +541,11 @@ with open(
         file.write(f'G0 X{m.floor(X_POS)} Y{m.floor(Y_POS-50)};\n\n')
 
         # Pattern 4
-        file.write(';; Pattern 4;\n')
-        p4 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_4(z))
-        for i in p4:
-            file.write(f'{i}\n')
-        file.write('\n')
+        # file.write(';; Pattern 4;\n')
+        # p4 = create_gcode_dataframe(GLOBAL_COLUMNS, pattern_44(z))
+        # for i in p4:
+        #     file.write(f'{i}\n')
+        # file.write('\n')
 
         # Dwell time
         file.write(f'G4 S{dwell_time};\n')
