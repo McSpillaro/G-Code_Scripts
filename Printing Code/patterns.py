@@ -65,6 +65,7 @@ def pattern_2(x_, y_, z_, size, print_speed):
     step_1 = x_val_right + 1
     step_2 = x_val_right + 2
 
+    # TOP/RIGHT HALF
     while (step_2 < x_val_left) and (step_2 != x_val_left):
         step_1 += 2
         step_2 += 2
@@ -76,6 +77,7 @@ def pattern_2(x_, y_, z_, size, print_speed):
     step_1 = x_val_right
     step_2 = x_val_right + 1 
         
+    # BOTTOM/LEFT HALF
     while (step_2 < x_val_left) and (step_2 != x_val_left - 1):
         step_1 += 2
         step_2 += 2
@@ -88,6 +90,7 @@ def pattern_2(x_, y_, z_, size, print_speed):
     step_1 = y_val_up + 1
     step_2 = y_val_up + 2
 
+    # TOP/RIGHT HALF
     while (step_2 < y_val_down) and (step_2 != y_val_down):
         step_1 += 2
         step_2 += 2
@@ -99,6 +102,7 @@ def pattern_2(x_, y_, z_, size, print_speed):
     step_1 = y_val_up + 1
     step_2 = y_val_up + 2
 
+    # BOTTOM/LEFT HALF
     while (step_2 < y_val_down) and (step_2 != y_val_down):
         step_1 += 2
         step_2 += 2
