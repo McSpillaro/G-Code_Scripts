@@ -75,9 +75,9 @@ Y_POS = Y_CENTER - (size / 2)
 # Creating the .gcode file
 with open(
     # windows
-    f'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    # f'E:\Programming\Public_Repos\G-Code_Scripts\G-Code Files\X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
     # mac
-    # f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
+    f'/Users/espiller/Programming/Public_Repos/G-Code_Scripts/G-Code Files/X_HATCH_{num_layer}L_d{m.floor(size/10)}_dz_{dz}_dt{dwell_time}_F{print_speed}.gcode', 'w'
 ) as file:
 
     bands = round(size)  # keeps the number of bands a whole number
@@ -161,8 +161,8 @@ with open(
             continue
         
         elif Z_COUNT == 4:
-            # Pattern 3
-            file.write(';; Pattern 3;\n')
+            # Pattern 4
+            file.write(';; Pattern 4;\n')
             p4 = create_gcode_dataframe(GLOBAL_COLUMNS,
                                         ptrn.pattern_4(X_POS, Y_POS, z, size, print_speed))
             for i in p4:
